@@ -65,7 +65,7 @@ jobs:
           docker push ${{ env.CONTAINER_REPOSITORY }}/${{ env.OWNER_NAME }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}
 
   editHelm-and-autoTrigger:
-    needs: build
+    needs: pull-and-push
     runs-on: ubuntu-latest
     environment: develop
     steps:
