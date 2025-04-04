@@ -15,7 +15,6 @@ env:
   OWNER_NAME: "sompornic"
   GH_TOKEN: ${{ secrets.PAT_TOKEN }}   # ใช้ PAT Token ที่มีสิทธิ์ push
   REPO_NAME: "helm-app"  # ชื่อ repo เป้าหมาย
-  FILE_PATH: "app1/values.yaml" # ไฟล์ที่ต้องการแก้ไข
   BRANCH: "main"  # Branch ที่ต้องการ push
 
 
@@ -69,6 +68,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: develop
     steps:
+      - name: Set FILE_PATH from APP_NAME
+        run: |
+          echo "FILE_PATH=${APP_NAME}/values.yaml" >> $GITHUB_ENV
+
       - name: Update Helm values.yaml via GitHub API
         run: |
           RESPONSE=$(curl -s -H "Authorization: token $GH_TOKEN" \
