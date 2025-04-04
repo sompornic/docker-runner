@@ -7,6 +7,7 @@ on:
 env:
   APP_NAME: ${{ github.event.client_payload.inputs.repo.APP_NAME }}
   IMAGE_TAG: ${{ github.event.client_payload.inputs.repo.IMAGE_TAG }}
+  APP_ENV: ${{ github.event.client_payload.inputs.repo.APP_ENV }}
   # NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
   # NEXUS_URL: "registry.matador.ais.co.th"
   # NEXUS_PATH: "living/sit"
@@ -16,6 +17,7 @@ env:
   GH_TOKEN: ${{ secrets.PAT_TOKEN }}   # ใช้ PAT Token ที่มีสิทธิ์ push
   REPO_NAME: "helm-app"  # ชื่อ repo เป้าหมาย
   BRANCH: "main"  # Branch ที่ต้องการ push
+  REPO_NAME_CD: "actionCD"  # ชื่อ repo เป้าหมาย
 
 
 jobs:
@@ -98,5 +100,5 @@ jobs:
         run: |
           curl -X POST -H "Authorization: token $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            -d '{"event_type": "deploy", "client_payload": {"zone": "dev"}}' \
-            "https://api.github.com/repos/$OWNER_NAME/$REPO_NAME/dispatches"
+            -d '{"event_type": "deploy", "client_payload": {"zone": "${{ env.APP_ENV }}", "appname": "${{ env.APP_NAME }}"}}' \
+            "https://api.github.com/repos/$OWNER_NAME/$REPO_NAME_CD/dispatches"
