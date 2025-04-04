@@ -21,8 +21,8 @@ env:
 
 jobs:
   build:
-    runs-on: [dev-onprem]
-    environment: dev
+    runs-on: ubuntu-latest
+    environment: develop
 
     steps:
       - name: Checkout pipelines
