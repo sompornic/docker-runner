@@ -20,7 +20,7 @@ env:
 
 
 jobs:
-  build:
+  pull-and-push:
     runs-on: ubuntu-latest
     environment: develop
 
@@ -64,7 +64,7 @@ jobs:
         run: |
           docker push ${{ env.CONTAINER_REPOSITORY }}/${{ env.OWNER_NAME }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}
 
-  deploy:
+  editHelm-and-autoTrigger:
     needs: build
     runs-on: ubuntu-latest
     environment: develop
