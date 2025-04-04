@@ -71,7 +71,7 @@ jobs:
     steps:
       - name: Update Helm values.yaml via GitHub API
         run: |
-          RESPONSE=$(curl -s -H "Authorization: token $PAT_TOKEN" \
+          RESPONSE=$(curl -s -H "Authorization: token $GH_TOKEN" \
             "https://api.github.com/repos/$OWNER_NAME/$REPO_NAME/contents/$FILE_PATH")
 
           FILE_SHA=$(echo "$RESPONSE" | jq -r '.sha')
@@ -86,14 +86,14 @@ jobs:
             --arg sha "$FILE_SHA" \
             '{ path: $path, message: $message, content: $content, sha: $sha }')
 
-          curl -X PUT -H "Authorization: token $PAT_TOKEN" \
+          curl -X PUT -H "Authorization: token $GH_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$PAYLOAD" \
             "https://api.github.com/repos/$OWNER_NAME/$REPO_NAME/contents/$FILE_PATH"
 
       - name: Trigger Helm Deployment
         run: |
-          curl -X POST -H "Authorization: token $PAT_TOKEN" \
+          curl -X POST -H "Authorization: token $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             -d '{"event_type": "deploy", "client_payload": {"zone": "dev"}}' \
             "https://api.github.com/repos/$OWNER_NAME/$REPO_NAME/dispatches"
